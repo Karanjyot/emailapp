@@ -6,7 +6,18 @@ const mongoose = require("mongoose");
 // user class 
 const User = mongoose.model("users");
 
+// user arguement is the user we retrieved from the db. Turn mongo model instance to user ID. 
+passport.serializeUser((user,done)=>{
+    done(null, user.id);
+});
 
+// doing the opposite of serializeUser. Turning the id here to a mongo model instance. 
+passport.deserializeUser((id,done)=>{
+    User.findById(id)
+    .then(user =>{
+        done(null,user);
+    });
+});
 
 // allowing passport to use the new instance of passport strategy and adding 2 arguments
 passport.use(new GoogleStrategy({
