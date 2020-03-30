@@ -9,7 +9,7 @@ require("./models/User");
 require("./services/passport");
 const authRoutes = require("./routes/authRoutes")
 
-mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/emaildb", { useNewUrlParser: true });
+mongoose.connect(process.env.MONGODB_URI || "mongodb://karanjyot:password1@ds113566.mlab.com:13566/heroku_2zbgk477", { useNewUrlParser: true });
 
 // generate app object
 const app = express();
