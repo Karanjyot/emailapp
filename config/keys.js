@@ -9,7 +9,3 @@ if (process.env.NODE_ENV === "production"){
     module.exports = require("./dev");
 }
 
-
-// client id: 240705514431-01noir7ve71u3ee5sod212rt2equpse9.apps.googleusercontent.com
-
-// secret: _jvIsC5UZPkV6AN_Za2fVVCl
