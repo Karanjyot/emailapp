@@ -6,12 +6,12 @@ const mongoose = require("mongoose");
 // user class 
 const User = mongoose.model("users");
 
-// user arguement is the user we retrieved from the db. Turn mongo model instance to user ID. 
+// user arguement is the user we retrieved from the db. Turn mongo model instance to user ID. Put Id into the cookie.
 passport.serializeUser((user,done)=>{
     done(null, user.id);
 });
 
-// doing the opposite of serializeUser. Turning the id here to a mongo model instance. 
+// doing the opposite of serializeUser. Turning the id here to a mongo model instance. Pull cookie back out and turn into a user. 
 passport.deserializeUser((id,done)=>{
     User.findById(id)
     .then(user =>{
@@ -23,7 +23,8 @@ passport.deserializeUser((id,done)=>{
 passport.use(new GoogleStrategy({
     clientID: keys.googleClientID,
     clientSecret: keys.googleClientSecret,
-    callbackURL: "/auth/google/callback"
+    callbackURL: "/auth/google/callback",
+    proxy: true
 },(accessToken, refreshToken, profile, done) => {
 
 // find googleId of selected user from DB
