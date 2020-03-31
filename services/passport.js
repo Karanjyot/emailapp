@@ -25,11 +25,11 @@ passport.use(new GoogleStrategy({
     clientSecret: keys.googleClientSecret,
     callbackURL: "/auth/google/callback",
     proxy: true
-},(accessToken, refreshToken, profile, done) => {
+},async (accessToken, refreshToken, profile, done) => {
 
 // find googleId of selected user from DB
-    User.findOne({googleId: profile.id})
-        .then((existingUser)=>{
+   const existingUser = await User.findOne({googleId: profile.id})
+       
             if(existingUser) {
                 //we have a record with given profile ID. Done allows passport to know that it needs to continue authentication flow.
                 // 1st argument is an error object. Pass null since we found a user so there is no error. Second argument provides existing user to passport. 
@@ -37,11 +37,11 @@ passport.use(new GoogleStrategy({
             }else{
                 //we don't have a user record with this ID. Make a new record
                 //creates record using model instance and saves it
-                new User({ googleId: profile.id }).save()
+               const user = await new User({ googleId: profile.id }).save()
                 // once user is created, pass user to passport and continue the authentication flow. 
-                .then(user=> done(null,user));
+                done(null,user);
             }
-        });
+     
    
 }));
 
