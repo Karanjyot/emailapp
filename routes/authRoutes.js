@@ -8,12 +8,16 @@ app.get("/auth/google", passport.authenticate("google",{
 })
 );
 //once user is confirm authentication,user is redirected to url below with a code. Passport calls on the google strategy which calls on accessToken inside GoogleStrategy.
-app.get("/auth/google/callback", passport.authenticate("google"))
+app.get("/auth/google/callback", passport.authenticate("google"), (req,res)=>{
+
+    // redirect to the surveys route handler
+    res.redirect('/surveys');
+});
 
 //logout is automatically attached to the req object by passport. It takes the cookie that contains user id and removes the id. 
 app.get("/api/logout", (req,res) =>{
     req.logout();
-    res.send(req.user);
+    res.redirect("/")
 })
 
 //send back the user. User is automatically attached to the req object by passport. Route to determine if user is signed in. 
