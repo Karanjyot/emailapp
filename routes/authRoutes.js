@@ -16,7 +16,7 @@ app.get("/api/logout", (req,res) =>{
     res.send(req.user);
 })
 
-//send back the user. User is automatically attached to the req object by passport
+//send back the user. User is automatically attached to the req object by passport. Route to determine if user is signed in. 
 app.get("/api/current_user", (req,res)=>{
     res.send(req.user)
 });

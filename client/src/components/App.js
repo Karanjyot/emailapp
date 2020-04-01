@@ -1,6 +1,10 @@
-import React from "react";
+import React, { Component } from "react";
 // browser router looks at current url and changes components visible. Route sets up rules.
 import { BrowserRouter, Route } from "react-router-dom";
+// allows us to use action creators
+import { connect } from "react-redux";
+//import all action creators from actions directory
+import * as actions from "../actions";
 
 import Header from "./Header"
 const Dashboard = () => <h2>Dashboard</h2>
@@ -8,22 +12,27 @@ const SurveyNew = () => <h2>SurveyNew</h2>
 const Landing = () => <h2>Landing</h2>
 
 
-const App = () => {
+class App extends Component{
 
-    return (
+    // once the component has been mounted to the screen fetch the current user/ figure out if user is signed in.
+    componentDidMount(){
+        this.props.fetchUser();
+    }
+    render(){
+        return (
 
-        <div>
-            <BrowserRouter >
-                <div>
-                    <Header />
-                    <Route exact path = "/" component = {Landing} />
-                    <Route exact path = "/surveys" component = {Dashboard} />
-                    <Route path ="/survey/new" component ={SurveyNew} />
-                </div>
-            </BrowserRouter>
-        </div>
-    )
-
+            <div className="container">
+                <BrowserRouter >
+                    <div>
+                        <Header />
+                        <Route exact path = "/" component = {Landing} />
+                        <Route exact path = "/surveys" component = {Dashboard} />
+                        <Route path ="/survey/new" component ={SurveyNew} />
+                    </div>
+                </BrowserRouter>
+            </div>
+        )
+    };
 };
 
-export default App
+export default connect(null, actions) (App);
