@@ -29,6 +29,8 @@ passport.use(new GoogleStrategy({
 
 // find googleId of selected user from DB
    const existingUser = await User.findOne({googleId: profile.id})
+
+   console.log(profile)
        
             if(existingUser) {
                 //we have a record with given profile ID. Done allows passport to know that it needs to continue authentication flow.
@@ -37,11 +39,13 @@ passport.use(new GoogleStrategy({
             }else{
                 //we don't have a user record with this ID. Make a new record
                 //creates record using model instance and saves it
-               const user = await new User({ googleId: profile.id }).save()
+               const user = await new User({ googleId: profile.id, name: profile.displayName }).save()
                 // once user is created, pass user to passport and continue the authentication flow. 
                 done(null,user);
             }
      
    
 }));
+
+
 

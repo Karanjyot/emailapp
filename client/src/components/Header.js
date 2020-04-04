@@ -1,45 +1,64 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { useState, useEffect  } from "react";
+import axios from "axios";
 import { Link } from "react-router-dom";
+import "./header.css"
 
-class Header extends Component {
+const Header = (props) => {
 
-    renderContent() {
 
-        switch(this.props.auth) {
-            case null:
-                return 
-            case false:
-                return (
-                    <li><a href="/auth/google">Login With Google</a></li>
-                )
-            default:
-                return <li><a href="/api/logout">Logout</a></li>
+    const [user, setUser] = useState([]);
+
+
+    const fetchResource = async () =>{
+        const response = await axios.get("/api/current_user")
+ 
+             console.log(response.data)
+             // this.setstate({ user: response.data})
+
+             setUser(response.data)
+ 
+ 
+      }
+    useEffect(() =>{
+        fetchResource()
+    }, [])
+
+   const renderContent = () => {
+
+   
+
+        if(user){
+            return <li><a href="/api/logout">Logout</a></li>
+        }else{
+           return <li><a href="/auth/google">Login With Google</a></li>
         }
     }
-    render(){
+    
+        console.log(user)
         return(
+            <div>
             <nav>
                 <div className="nav-wrapper">
-                    <Link to={this.props.auth ? "/surveys"  : "/"}className ="left brand-logo">
-                        Emaily
+                    <Link to={user ? "/home"  : "/"}>
+                        aMuse
                     </Link>
                     <ul className="right">
                         <li>
-                            {this.renderContent()}
+                            {renderContent()}
                         </li>
                     </ul>
+
+
+
                 </div>
             </nav>
+
+            
+            </div>
         );
-    };
+    
 
    
 };
 
-function mapStateToProps(state) {
-
-    return { auth: state.auth }
-}
-
-export default connect(mapStateToProps) (Header);
+export default Header;

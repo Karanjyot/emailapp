@@ -1,39 +1,51 @@
-import React, { Component } from "react";
+import axios from "axios";
+import React, { useState, useEffect  } from "react";
 // browser router looks at current url and changes components visible. Route sets up rules.
-import { BrowserRouter, Route } from "react-router-dom";
-// allows us to use action creators
-import { connect } from "react-redux";
-//import all action creators from actions directory
-import * as actions from "../actions";
+import { BrowserRouter, Route,} from "react-router-dom";
 
-import Header from "./Header"
 import Landing from "./Landing"
-const Dashboard = () => <h2>Dashboard</h2>
-const SurveyNew = () => <h2>SurveyNew</h2>
+import Signup from "./Signup"
+import Login from "./Login"
+import Home from "./Home"
 
 
+const App = () =>{
 
-class App extends Component{
+const [user, setUser] = useState([]);
 
-    // once the component has been mounted to the screen fetch the current user/ figure out if user is signed in.
-    componentDidMount(){
-        this.props.fetchUser();
-    }
-    render(){
+
+    const fetchResource = async () =>{
+        const response = await axios.get("/api/current_user")
+ 
+             console.log(response.data)
+             // this.setstate({ user: response.data})
+
+             setUser(response.data)
+ 
+ 
+      }
+    useEffect(() =>{
+        fetchResource()
+    }, [])
+
         return (
 
             <div className="container">
+
+        
                 <BrowserRouter >
                     <div>
-                        <Header />
                         <Route exact path = "/" component = {Landing} />
-                        <Route exact path = "/surveys" component = {Dashboard} />
-                        <Route path ="/survey/new" component ={SurveyNew} />
+                        <Route exact path = "/signup" component = {Signup} />
+                        <Route exact path = "/login" component = {Login} />
+                        <Route path ="/home" component ={Home} />
                     </div>
                 </BrowserRouter>
             </div>
         )
-    };
+  
 };
 
-export default connect(null, actions) (App);
+export default App;
+
+
